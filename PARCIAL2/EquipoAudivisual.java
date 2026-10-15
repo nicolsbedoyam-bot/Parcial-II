@@ -14,13 +14,14 @@ public abstract class EquipoAudivisual {
         this.estado = estado;
     }
     public boolean identificarDisponibilidad(){
-        if(estado.equalsIgnoreCase("Disponible")) {
-            return true;
-        }else{
-            return false;
-        }
-
+        return estado.equalsIgnoreCase("Disponible");
     }
+    //Por defecto un equipo no requiere operador, el dron lo sobrescribe
+    public boolean requiereOperador() {
+        return false;
+    }
+    //Cada clase hija debe implementarlo
+    public abstract double calcularCosto(int horas);
 
     @Override
     public String toString() {
