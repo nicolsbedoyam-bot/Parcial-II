@@ -13,6 +13,10 @@ public class Operador {
         this.aniosExperiencia = aniosExperiencia;
     }
 
+    public boolean estaCapacitado(){
+        return certificacion != null && !certificacion.isEmpty();
+    }
+
     //Getters and setters
     public String getCedula(){
 
