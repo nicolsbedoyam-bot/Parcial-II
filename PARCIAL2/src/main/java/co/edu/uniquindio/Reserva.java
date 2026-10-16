@@ -1,7 +1,6 @@
-package co.edu.uniquindio;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Reserva {
 
@@ -11,25 +10,29 @@ public class Reserva {
     private final Turno_Reserva turno;
     private Situacion_Reserva situacion;
     private Operador operador;
-    private ArrayList<EquipoAudioVisual> equipos;
+    private ArrayList<EquipoAudiovisual> equipos;
     private ArrayList<Integer> horasPorEquipo;
 
 
-    public Reserva(String codigo, Cliente cliente, LocalDate fecha, Turno_Reserva turno) {
-        this.codigo = codigo;
+    public Reserva(int codigoReserva, Cliente cliente, LocalDate fecha, Turno_Reserva turno) {
+        this.codigoReserva = codigoReserva;
         this.cliente = cliente;
         this.fecha = fecha;
         this.turno = turno;
-        this.situacion = Situacion_Reserva.SOLICITADA;
+        this.situacion = Situacion_Reserva.Solicitada;
         this.operador = null;
         this.equipos = new ArrayList<>();
         this.horasPorEquipo = new ArrayList<>();
     }
 
+    public EquipoAudiovisual getEquipo(int i){
+        return equipos.get(i);
+    }
 
-    public boolean tieneEquipo(EquipoAudioVisual equipo) {
-        for (EquipoAudioVisual e : equipos) {
-            if (e.getCodigo().equals(equipo.getCodigo())) {
+
+    public boolean tieneEquipo(EquipoAudiovisual equipo) {
+        for (EquipoAudiovisual e : equipos) {
+            if (e.getCodigo()==equipo.getCodigo()) {
                 return true;
             }
         }
@@ -37,8 +40,8 @@ public class Reserva {
     }
 
 
-    public boolean agregarEquipo(EquipoAudioVisual equipo, int horas) {
-        if (situacion != Situacion_Reserva.SOLICITADA) {
+    public boolean agregarEquipo(EquipoAudiovisual equipo, int horas) {
+        if (situacion != Situacion_Reserva.Solicitada) {
             return false;
         }
         if (horas <= 0) {
@@ -47,7 +50,7 @@ public class Reserva {
         if (tieneEquipo(equipo)) {
             return false;
         }
-        if (!equipo.estaDisponible()) {
+        if (!equipo.identificarDisponibilidad()) {
             return false;
         }
         equipos.add(equipo);
@@ -58,7 +61,7 @@ public class Reserva {
 
     public int getCantidadEquipos() {
         int contador = 0;
-        for (EquipoAudioVisual e : equipos) {
+        for (EquipoAudiovisual e : equipos) {
             contador = contador + 1;
         }
         return contador;
@@ -66,7 +69,7 @@ public class Reserva {
 
 
     private boolean requiereOperador() {
-        for (EquipoAudioVisual e : equipos) {
+        for (EquipoAudiovisual e : equipos) {
             if (e.requiereOperador()) {
                 return true;
             }
@@ -77,7 +80,7 @@ public class Reserva {
 
 
     public boolean asignarOperador(Operador operador) {
-        if (situacion != Situacion_Reserva.SOLICITADA) {
+        if (situacion != Situacion_Reserva.Solicitada) {
             return false;
         }
         if (operador == null) {
@@ -105,21 +108,21 @@ public class Reserva {
 
 
     public boolean cambiarSituacion(Situacion_Reserva nueva) {
-        if (situacion == Situacion_Reserva.SOLICITADA) {
-            if (nueva == Situacion_Reserva.CONFIRMADA) {
+        if (situacion == Situacion_Reserva.Solicitada) {
+            if (nueva == Situacion_Reserva.Confirmada) {
                 if (!puedeConfirmarse()) {
                     return false;
                 }
                 situacion = nueva;
                 return true;
             }
-            if (nueva == Situacion_Reserva.CANCELADA) {
+            if (nueva == Situacion_Reserva.Cancelada) {
                 situacion = nueva;
                 return true;
             }
         }
-        if (situacion == Situacion_Reserva.CONFIRMADA) {
-            if (nueva == Situacion_Reserva.CANCELADA || nueva == Situacion_Reserva.FINALIZADA) {
+        if (situacion == Situacion_Reserva.Confirmada) {
+            if (nueva == Situacion_Reserva.Cancelada || nueva == Situacion_Reserva.Finalizada) {
                 situacion = nueva;
                 return true;
             }
@@ -170,11 +173,11 @@ public class Reserva {
         this.operador = operador;
     }
 
-    public ArrayList<EquipoAudioVisual> getEquipos() {
+    public ArrayList<EquipoAudiovisual> getEquipos() {
         return equipos;
     }
 
-    public void setEquipos(ArrayList<EquipoAudioVisual> equipos) {
+    public void setEquipos(ArrayList<EquipoAudiovisual> equipos) {
         this.equipos = equipos;
     }
 
