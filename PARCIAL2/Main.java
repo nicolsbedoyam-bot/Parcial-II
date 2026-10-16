@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 
 public class Main {
 
-    static Empresa empresa = new Empresa("98765", "PixelRent");
+    static Empresa empresa = new Empresa("PixelRent", "98765");
     static ArrayList<Cliente> clientes = new ArrayList<>();
     static ArrayList<EquipoAudiovisual> equipos = new ArrayList<>();
 
